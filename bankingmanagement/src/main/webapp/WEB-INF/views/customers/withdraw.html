@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>width-draw</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+</head>
+<body _c_t_common="1">
+<div class="container">
+  <div class="table-title mb-4">
+    <div class="row">
+      <div class="col-sm-8">
+        <h2>Withdraw money from the customer's account</h2>
+      </div>
+      <div class="col-sm-4">
+        <a  th:href="@{/customers}" class="btn btn-outline-light"><i class="fa fa-list" aria-hidden="true"></i> <span>Customer list</span></a>
+      </div>
+    </div>
+  </div>
+  <form id="frmWithdraw" method="post" novalidate="novalidate" th:object="${customer}" >
+    <fieldset class="row g-3">
+      <div class="mb-3 col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-12 col-form-label">Customer ID</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" th:field="*{id}" readonly="" id="customerId" name="customerId" value="1415">
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-12 col-form-label">Full Name</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" th:field="*{fullName}" readonly="" id="fullName" name="fullName" value="Ariana Mclean">
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-12 col-form-label">Current balance ($)</label>
+          <div class="col-sm-12" >
+            <input type="text" class="form-control num-space" th:field="*{balance}" readonly="" id="balance" name="balance" value="2222222">
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-12 col-form-label">Transaction Amount ($)</label>
+          <div class="col-sm-12" th:object="${withdraw}">
+            <input type="text" class="form-control num-space" maxlength="14" th:field="*{transactionAmount}" id="transactionAmount" name="transactionAmount" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 col-md-12">
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <button type="submit" class="btn btn-outline-warning">
+              <i class="fa fa-minus" aria-hidden="true"></i>
+              Withdraw
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="footer">
+  <div id="message-alert">
+
+
+    <div class="alert-danger hide">
+      <h5>Please correct errors below:</h5>
+    </div>
+
+  </div>
+</div>
+
+
+<script type="text/javascript" src="/assets/js/sweetalert2.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.validate-1.19.3.min.js"></script>
+<script type="text/javascript" src="/assets/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/assets/js/popper-v1.16.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.number.js"></script>
+<script type="text/javascript" src="/assets/js/custom-validation.js"></script>
+<script type="text/javascript" src="/assets/js/app.js"></script>
+
+
+
+<div id="eJOY__extension_root" class="eJOY__extension_root_class" style="all: unset;"></div><iframe id="nr-ext-rsicon" style="position: absolute; display: none; width: 50px; height: 50px; z-index: 2147483647; border-style: none; background: transparent;"></iframe></body>
+</html>
