@@ -47,7 +47,7 @@
         <div class="col-sm-6">
           <label for="transactionAmount" class="form-label"><strong>Transaction Amount ($)</strong></label>
           <div class="col-sm-12" th:object="${deposit}">
-            <input type="text" class="form-control" id="transactionAmount" name="transactionAmount" th:field="*{transactionAmount}" />
+            <input type="number" class="form-control" id="transactionAmount" name="transactionAmount" th:field="*{transactionAmount}" />
         </div>
       </div>
       <div class="row mt-3">
@@ -58,11 +58,10 @@
           </button>
         </div>
       </div>
+      </div>
     </form>
   </div>
 </div>
-
-
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

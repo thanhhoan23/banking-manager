@@ -27,25 +27,29 @@
         </div>
     </div>
     <div>
-        <form method="post" th:object="${customer}">
+        <div>
+        <form method="post" th:object="${customerCreateDto}">
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label for="fullName" class="form-label"><strong>Full name</strong></label>
-                    <input type="text" id="fullName" class="form-control" name="fullName">
+                    <label class="form-label"><strong>Full name</strong></label>
+                    <input type="text" class="form-control" th:field="*{fullName}">
+                    <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
                 </div>
                 <div class="col-sm-6">
-                    <label for="email" class="form-label"><strong>Email</strong></label>
-                    <input type="text" id="email" name="email"  class="form-control">
+                    <label class="form-label"><strong>Email</strong></label>
+                    <input type="text" class="form-control" th:field="*{email}">
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label for="phone" class="form-label"><strong>Phone</strong></label>
-                    <input type="text" id="phone" name="phone" class="form-control">
+                    <label  class="form-label"><strong>Phone</strong></label>
+                    <input type="text"  class="form-control" th:field="*{phone}">
+                    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
                 </div>
                 <div class="col-sm-6">
-                    <label for="address" class="form-label"><strong>Address</strong></label>
-                    <input type="text" id="address" name="address" class="form-control">
+                    <label  class="form-label"><strong>Address</strong></label>
+                    <input type="text" class="form-control" th:field="*{address}">
                 </div>
             </div>
             <div class="row mt-3">
@@ -57,9 +61,18 @@
                 </div>
             </div>
         </form>
+        </div>
+    </div>
+    <div class="footer m-lg-1">
+        <div id="message-alert">
+            <th:block th:if="${message} == true">
+                <div class="alert alert-success">
+                    <h5><span>Successfully added new Customer</span></h5>
+                </div>
+            </th:block>
+        </div>
     </div>
 </div>
-
 
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
 </body>

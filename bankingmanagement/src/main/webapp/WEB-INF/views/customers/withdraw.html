@@ -49,7 +49,7 @@
         <div class="form-group row">
           <label class="col-sm-12 col-form-label">Transaction Amount ($)</label>
           <div class="col-sm-12" th:object="${withdraw}">
-            <input type="text" class="form-control num-space" maxlength="14" th:field="*{transactionAmount}" id="transactionAmount" name="transactionAmount" value="">
+            <input type="number" class="form-control num-space" maxlength="14" th:field="*{transactionAmount}" id="transactionAmount" name="transactionAmount" value="">
           </div>
         </div>
       </div>

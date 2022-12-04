@@ -1,10 +1,13 @@
 package org.example.model;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 @Entity
 @Table(name= "deposits")
-public class Deposit extends ModelGeneral {
+public class Deposit extends ModelGeneral{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDeposit;
@@ -13,7 +16,6 @@ public class Deposit extends ModelGeneral {
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "customer_id", referencedColumnName = "id",nullable = false)
     private Customer customer;
-
     public Deposit() {}
 
     public Deposit(Long idDeposit, BigDecimal transactionAmount, Customer customer) {
@@ -45,5 +47,6 @@ public class Deposit extends ModelGeneral {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
 }
 

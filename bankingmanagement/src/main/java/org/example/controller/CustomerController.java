@@ -13,6 +13,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/customers")
-public class CustomerController {
+public class CustomerController  {
     @Autowired
     private ICustomerService customerService;
     @Autowired
@@ -44,40 +46,60 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public String doCreateCustomer(Model model, @ModelAttribute CustomerCreateDto customerCreateDto){
-        Customer customer = new Customer();
-        customer.setId(null);
-        customer.setFullName(customerCreateDto.getFullName());
-        customer.setEmail(customerCreateDto.getEmail());
-        customer.setPhone(customerCreateDto.getPhone());
-        customer.setAddress(customerCreateDto.getAddress());
-        customer.setBalance(new BigDecimal(0L));
-        customer.setUpdateAt(null);
-        customerService.save(customer);
+    public String doCreateCustomer(Model model, @Validated @ModelAttribute CustomerCreateDto customerCreateDto, BindingResult bindingResult){
+       new CustomerCreateDto().validate(customerCreateDto,bindingResult);
+       if(bindingResult.hasFieldErrors()) {
+           model.addAttribute("errors",true);
+           model.addAttribute("customerCreateDto", customerCreateDto);
+       } else {
+           Customer customer = new Customer();
+           customer.setId(null);
+           customer.setFullName(customerCreateDto.getFullName());
+           customer.setEmail(customerCreateDto.getEmail());
+           customer.setPhone(customerCreateDto.getPhone());
+           customer.setAddress(customerCreateDto.getAddress());
+           customer.setBalance(new BigDecimal(0L));
+           customer.setUpdateAt(null);
+           customerService.save(customer);
+           model.addAttribute("customerCreateDto", new CustomerCreateDto());
+           model.addAttribute("message", true);
+       }
         return "/customers/create";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm (Model model, @PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
-
-        model.addAttribute("customer", customerOptional.get());
-
+        model.addAttribute("customerEditDto", customerOptional.get());
         return "/customers/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit (Model model,@PathVariable Long id, @ModelAttribute CustomerEditDto customerEditDto) {
-        Customer customer = new Customer();
-        customer.setId(id);
-        customer.setFullName(customerEditDto.getFullName());
-        customer.setEmail(customerEditDto.getEmail());
-        customer.setPhone(customerEditDto.getPhone());
-        customer.setAddress(customerEditDto.getAddress());
-        customerService.save(customer);
-        List<Customer> customers = customerService.findAll();
-        model.addAttribute("customers", customers);
-       return "/customers/index";
+    public String edit (Model model,@PathVariable Long id, @Validated @ModelAttribute CustomerEditDto customerEditDto, BindingResult bindingResult){
+       Optional<Customer> customerOptional = customerService.findById(id);
+        System.out.println(customerEditDto);
+       new CustomerEditDto().validate(customerEditDto,bindingResult);
+        if (customerOptional.isPresent()) {
+            if(bindingResult.hasFieldErrors()) {
+                model.addAttribute("errors",true);
+                model.addAttribute("customerEditDto",customerEditDto);
+            } else {
+                Customer customer = customerOptional.get();
+                customer.setFullName(customerEditDto.getFullName());
+               customer.setEmail(customerEditDto.getEmail());
+               customer.setPhone(customerEditDto.getPhone());
+               customer.setAddress(customerEditDto.getAddress());
+               customerService.save(customer);
+//                model.addAttribute("customerEditDto",customerEditDto);
+                model.addAttribute("customerEditDto", customer);
+    //        List<Customer> customers = customerService.findAll();
+    //        model.addAttribute("customers", customers);
+               model.addAttribute("message", true);};
+       } else {
+           model.addAttribute("errors","Customer can not find");
+       }
+
+       return "/customers/edit";
     }
 
     @GetMapping("/suspended/{id}")
@@ -115,7 +137,7 @@ public class CustomerController {
         depositService.save(deposit);
         customerService.save(newCustomer);
         model.addAttribute("customer",newCustomer);
-        model.addAttribute("deposit", deposit);
+        model.addAttribute("deposit",new Deposit());
         return "/customers/deposit";
     }
 
@@ -142,7 +164,7 @@ public class CustomerController {
         model.addAttribute("customer", newCustomer);
         model.addAttribute("withdraw",withdraw);
         return "/customers/withdraw";
-
     }
+
 
 }
