@@ -60,6 +60,16 @@
       </div>
       </div>
     </form>
+
+    <div class="footer m-lg-1">
+      <div id="message-alert">
+        <th:block th:if="${message} == true">
+          <div class="alert alert-success">
+            <h5><span>Successfully deposit transaction amount</span></h5>
+          </div>
+        </th:block>
+      </div>
+    </div>
   </div>
 </div>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>

@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.model.Customer;
 import org.example.model.Deposit;
+import org.example.model.Transfer;
 import org.example.model.Withdraw;
 import org.example.model.dto.CustomerCreateDto;
 import org.example.model.dto.CustomerEditDto;
@@ -138,6 +139,7 @@ public class CustomerController  {
         customerService.save(newCustomer);
         model.addAttribute("customer",newCustomer);
         model.addAttribute("deposit",new Deposit());
+        model.addAttribute("message",true);
         return "/customers/deposit";
     }
 
@@ -160,11 +162,21 @@ public class CustomerController  {
         newCustomer.setBalance(newBalance);
         withdrawService.save(withdraw);
         customerService.save(newCustomer);
-
         model.addAttribute("customer", newCustomer);
-        model.addAttribute("withdraw",withdraw);
+        model.addAttribute("withdraw",new Withdraw());
+        model.addAttribute("message", true);
         return "/customers/withdraw";
     }
-
-
+    @GetMapping("/transfer/{id}")
+    public String showFormTransfer (Model model, @PathVariable Long id, @ModelAttribute Transfer transfer) {
+        Optional<Customer> optionalSender = customerService.findById(id);
+        Optional<Customer> optionalRecipient = customerService.findById(id);
+       Customer sender = optionalSender.get();
+       Customer recipient = optionalRecipient.get();
+       model.addAttribute("transfer", transfer);
+       model.addAttribute("sender",sender);
+       model.addAttribute("recipient",recipient);
+       return "/customers/transfer";
+    }
+    
 }
