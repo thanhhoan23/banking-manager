@@ -23,15 +23,15 @@
             </div>
         </div>
     </div>
-    <form method="post" th:object="${transferDTO}">
+    <form method="post" th:object="${sender}">
         <div class="row mt-3">
             <div class="col-lg-3">
                 <label for="senderId" class="form-label"><strong>Sender ID</strong></label>
-                <input type="text" id="senderId" th:field="*{senderId}" class="form-control" readonly>
+                <input type="text" id="senderId" th:field="*{id}" class="form-control" readonly>
             </div>
             <div class="col-lg-3">
                 <label for="senderName" class="form-label"><strong>Sender name</strong></label>
-                <input type="text" id="senderName" th:field="*{senderName}" class="form-control" readonly>
+                <input type="text" id="senderName" th:field="*{fullName}" class="form-control" readonly>
             </div>
             <div class="col-lg-3">
                 <label for="email" class="form-label"><strong>Email</strong></label>
@@ -46,14 +46,14 @@
             <div class="col-lg-3">
                 <label class="form-label"><strong>Recipient Name</strong></label>
                 <select class="form-select" id="recipient" name="recipientId">
-                    <th:block th:each="item : ${recipients}">
+                    <th:block th:each="item : ${recipient}">
                         <option th:value="${item.id}" th:text="'(' + ${item.id} + ')' + ' - ' + ${item.fullName}"></option>
                     </th:block>
                 </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" >
                 <label for="transferAmount" class="form-label"><strong>Transfer Amount ($)</strong></label>
-                <input type="text" id="transferAmount" th:field="*{transferAmount}" value="10" class="form-control">
+                <input type="text" id="transferAmount" value="10" class="form-control">
             </div>
             <div class="col-lg-3">
                 <label for="fees" class="form-label"><strong>Fees (%)</strong></label>

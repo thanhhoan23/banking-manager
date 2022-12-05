@@ -204,18 +204,15 @@ public class CustomerController  {
         model.addAttribute("message", true);
         return "/customers/withdraw";
     }
-
-
-//    @GetMapping("/transfer/{id}")
-//    public String showFormTransfer (Model model, @PathVariable Long id, @ModelAttribute Transfer transfer) {
-//        Optional<Customer> optionalSender = customerService.findById(id);
-//        Optional<Customer> optionalRecipient = customerService.findById(id);
-//       Customer sender = optionalSender.get();
-//       Customer recipient = optionalRecipient.get();
-//       model.addAttribute("transfer", transfer);
-//       model.addAttribute("sender",sender);
-//       model.addAttribute("recipient",recipient);
-//       return "/customers/transfer";
-//    }
+    @GetMapping("/transfer/{id}")
+    public String showFormTransfer (Model model, @PathVariable Long id, @ModelAttribute Transfer transfer) {
+       Optional<Customer> optionalSender = customerService.findById(id);
+       Customer sender = optionalSender.get();
+       List<Customer> recipient = customerService.findAllByIdNot(id);
+       model.addAttribute("transfer", transfer);
+       model.addAttribute("sender",sender);
+       model.addAttribute("recipient",recipient);
+       return "/customers/transfer";
+    }
     
 }

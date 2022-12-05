@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "transfers")
-public class Transfer {
+public class Transfer extends ModelGeneral {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTransfer;
