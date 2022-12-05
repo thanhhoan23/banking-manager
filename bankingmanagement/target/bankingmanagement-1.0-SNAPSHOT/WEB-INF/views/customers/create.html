@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Create</title>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
-
+    <th:block th:replace="/layout/css"/>
 </head>
 <body>
-
 <div class="container">
     <div class="table-title">
         <div class="row">
@@ -63,7 +59,7 @@
         </form>
         </div>
     </div>
-    <div class="footer m-lg-1">
+    <div class="footer container">
         <div id="message-alert">
             <th:block th:if="${message} == true">
                 <div class="alert alert-success">

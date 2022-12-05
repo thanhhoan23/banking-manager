@@ -6,6 +6,7 @@ import org.example.model.Transfer;
 import org.example.model.Withdraw;
 import org.example.model.dto.CustomerCreateDto;
 import org.example.model.dto.CustomerEditDto;
+import org.example.model.dto.DepositDto;
 import org.example.services.customer.CustomerService;
 import org.example.services.customer.ICustomerService;
 import org.example.services.deposit.IDepositService;
@@ -112,9 +113,15 @@ public class CustomerController  {
 
     @PostMapping("/suspended/{id}")
     public String doSuspendedPage (Model model, @PathVariable Long id){
-        customerService.deleteById(id);
-        List<Customer> customers = customerService.findAll();
-        model.addAttribute("customers", customers);
+        Optional<Customer> customerOptional = customerService.findById(id);
+        if(customerOptional.isPresent()) {
+            customerService.deleteById(id);
+            List<Customer> customers = customerService.findAll();
+            model.addAttribute("customers", customers);
+        }else {
+            model.addAttribute("errors","Customer can not find");
+        }
+
         return "/customers/index";
     }
 
@@ -125,24 +132,54 @@ public class CustomerController  {
         model.addAttribute("deposit",deposit);
         return "/customers/deposit";
     }
-
     @PostMapping("/deposit/{id}")
     public String doDeposit (Model model, @PathVariable Long id,@ModelAttribute Deposit deposit){
-        Optional<Customer> customerOptional = customerService.findById(id);
-        Customer newCustomer = customerOptional.get();
-        BigDecimal beforeBalance = newCustomer.getBalance();
-        BigDecimal transactionAmount  = deposit.getTransactionAmount();
-        BigDecimal newBalance = beforeBalance.add(transactionAmount);
-        deposit.setCustomer(newCustomer);
-        newCustomer.setBalance(newBalance);
-        depositService.save(deposit);
-        customerService.save(newCustomer);
-        model.addAttribute("customer",newCustomer);
-        model.addAttribute("deposit",new Deposit());
-        model.addAttribute("message",true);
+           Optional<Customer> customerOptional = customerService.findById(id);
+           if(customerOptional.isPresent()) {
+               Customer newCustomer = customerOptional.get();
+               BigDecimal beforeBalance = newCustomer.getBalance();
+               BigDecimal transactionAmount = deposit.getTransactionAmount();
+               BigDecimal newBalance = beforeBalance.add(transactionAmount);
+               deposit.setCustomer(newCustomer);
+               newCustomer.setBalance(newBalance);
+               depositService.save(deposit);
+               customerService.save(newCustomer);
+               model.addAttribute("customer", newCustomer);
+               model.addAttribute("deposit", new Deposit());
+               model.addAttribute("message", true);
+           }else {
+               model.addAttribute("errors","Customer can not find");
+           }
         return "/customers/deposit";
     }
-
+//    @PostMapping("/deposit/{id}")
+//    public String doDeposit (Model model, @PathVariable Long id,@Validated @ModelAttribute DepositDto depositDto,BindingResult bindingResult){
+//        Optional<Customer> customerOptional = customerService.findById(id);
+//         Deposit deposit = new Deposit();
+//        new DepositDto().validate(depositDto,bindingResult);
+//        if(customerOptional.isPresent()) {
+//            if (bindingResult.hasFieldErrors()){
+//                model.addAttribute("errors", true);
+//                model.addAttribute("depositDto",depositDto);
+//            } else {
+//                Customer newCustomer = customerOptional.get();
+//                BigDecimal beforeBalance = newCustomer.getBalance();
+//                String transactionAmount = depositDto.getTransactionAmount();
+//                BigDecimal newBalance = beforeBalance.add(BigDecimal.valueOf(Long.parseLong(transactionAmount)));
+//                depositDto.setCustomer(newCustomer);
+//                newCustomer.setBalance(newBalance);
+//                deposit.setTransactionAmount(BigDecimal.valueOf(Long.parseLong(depositDto.getTransactionAmount())));
+//                depositService.save(deposit);
+//                customerService.save(newCustomer);
+//                model.addAttribute("customer", newCustomer);
+//                model.addAttribute("deposit", new DepositDto());
+//                model.addAttribute("message", true);
+//            }
+//        }else {
+//            model.addAttribute("errors","Customer can not find");
+//        }
+//        return "/customers/deposit";
+//    }
     @GetMapping("/withdraw/{id}")
     public String showWithdrawForm(Model model, @PathVariable Long id, @ModelAttribute Withdraw withdraw){
        Optional<Customer> customerOptional= customerService.findById(id);
@@ -167,16 +204,18 @@ public class CustomerController  {
         model.addAttribute("message", true);
         return "/customers/withdraw";
     }
-    @GetMapping("/transfer/{id}")
-    public String showFormTransfer (Model model, @PathVariable Long id, @ModelAttribute Transfer transfer) {
-        Optional<Customer> optionalSender = customerService.findById(id);
-        Optional<Customer> optionalRecipient = customerService.findById(id);
-       Customer sender = optionalSender.get();
-       Customer recipient = optionalRecipient.get();
-       model.addAttribute("transfer", transfer);
-       model.addAttribute("sender",sender);
-       model.addAttribute("recipient",recipient);
-       return "/customers/transfer";
-    }
+
+
+//    @GetMapping("/transfer/{id}")
+//    public String showFormTransfer (Model model, @PathVariable Long id, @ModelAttribute Transfer transfer) {
+//        Optional<Customer> optionalSender = customerService.findById(id);
+//        Optional<Customer> optionalRecipient = customerService.findById(id);
+//       Customer sender = optionalSender.get();
+//       Customer recipient = optionalRecipient.get();
+//       model.addAttribute("transfer", transfer);
+//       model.addAttribute("sender",sender);
+//       model.addAttribute("recipient",recipient);
+//       return "/customers/transfer";
+//    }
     
 }

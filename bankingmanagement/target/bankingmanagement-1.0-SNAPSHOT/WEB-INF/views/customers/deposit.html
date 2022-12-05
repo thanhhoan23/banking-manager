@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <meta charset="UTF-8">
   <title>Deposit</title>
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
-
+  <th:block th:replace="/layout/css"/>
 </head>
 <body>
-
 <div class="container">
   <div class="table-title">
     <div class="row">
@@ -26,7 +22,6 @@
       </div>
     </div>
   </div>
-
   <div>
     <form method="post" th:object="${customer}">
       <div class="row mt-3">
@@ -47,8 +42,9 @@
         <div class="col-sm-6">
           <label for="transactionAmount" class="form-label"><strong>Transaction Amount ($)</strong></label>
           <div class="col-sm-12" th:object="${deposit}">
-            <input type="number" class="form-control" id="transactionAmount" name="transactionAmount" th:field="*{transactionAmount}" />
-        </div>
+            <input type="number" class="form-control" id="transactionAmount" name="transactionAmount" th:field="*{transactionAmount}"/>
+<!--            <span th:if="${#fields.hasErrors('transactionAmount')}" th:errors="*{transactionAmount}"></span>-->
+          </div>
       </div>
       <div class="row mt-3">
         <div class="col-lg-3">
@@ -60,7 +56,6 @@
       </div>
       </div>
     </form>
-
     <div class="footer m-lg-1">
       <div id="message-alert">
         <th:block th:if="${message} == true">
